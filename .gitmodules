@@ -1,0 +1,3 @@
+[submodule "src/scapy"]
+	path = src/scapy
+	url = git@github.com:Frozenbitz/scapy.git
