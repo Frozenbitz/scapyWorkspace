@@ -1,0 +1,30 @@
+[project]
+name = "workspace"
+version = "0.1.0"
+description = "Development environment for testing scapy integration with OPC UA"
+authors = [
+    {name = "Frozenbitz"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "scapy @ file:///home/las3/peter/scapyWorkspace/src/scapy",
+    "cryptography (>=45.0.6,<46.0.0)",
+    "pyx (>=0.16,<0.17)",
+    "matplotlib (>=3.10.5,<4.0.0)"
+]
+
+[project.scripts]
+workspace = "workspace.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools.package-dir]
+workspace = 'src/workspace'
+scapy = 'src/scapy'
+
+[tool.poetry.dependencies]
+scapy = {develop = true}
