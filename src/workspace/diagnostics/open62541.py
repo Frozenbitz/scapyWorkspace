@@ -138,7 +138,7 @@ open62541_client_CloseSecureChannelRequest = bytes.fromhex(
 )
 
 # Error: 0x80130000 [BadSecurityChecksFailed]
-open62541_client_CloseSecureChannelRequest_ack = bytes.fromhex(
+open62541_client_CloseSecureChannelRequest_err = bytes.fromhex(
     "5afb56217e49da9c8d0f1fc4080045000044fddf40004006e4acac110002ac11000312e"
     "88f0a6aaa67c1b5b76262801801f8585e00000101080a85225b5c7493ccab4552524610"
     "00000000001380ffffffff"

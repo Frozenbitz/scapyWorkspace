@@ -18,7 +18,7 @@ from workspace.diagnostics.open62541 import (
     open62541_client_CloseSessionRequest,
     open62541_client_CloseSessionRequest_ack,
     open62541_client_CloseSecureChannelRequest,
-    open62541_client_CloseSecureChannelRequest_ack,
+    open62541_client_CloseSecureChannelRequest_err,
 )
 
 from workspace.diagnostics.python_opcua import (
