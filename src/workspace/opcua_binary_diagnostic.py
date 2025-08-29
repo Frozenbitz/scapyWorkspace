@@ -2,7 +2,7 @@ from scapy.all import *
 
 from scapy.layers.l2 import Ether
 
-from scapy.contrib.opc_binary import (
+from scapy.contrib.opcua_binary import (
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Ack,
     OPC_UA_Binary_OpenSecureChannel,
@@ -25,17 +25,17 @@ from workspace.diagnostics.open62541 import (
 
 def main():
 
-    parsed_client_hello = Ether(pythonopc_client_hello)
-    parsed_client_hello.show()
+    packet = Ether(pythonopc_client_hello)
+    packet.show()
 
     packet = Ether(pythonopc_client_hello_ack)
     packet.show()
 
-    parsed_client_osc = Ether(pythonopc_client_OpenSecureChannel)
-    parsed_client_osc.show()
+    packet = Ether(pythonopc_client_OpenSecureChannel)
+    packet.show()
 
-    parsed_client_osc = Ether(pythonopc_client_ActivateSessionRequest)
-    parsed_client_osc.show()
+    packet = Ether(pythonopc_client_ActivateSessionRequest)
+    packet.show()
 
     packet = Ether(open62541_client_CloseSecureChannelRequest_err)
     packet.show()
@@ -50,8 +50,8 @@ def decodeSomeOpcBins():
     # somepacket = OPC_UA_Binary_Hello()
     # somepacket.show()
 
-    # somepacket = OPC_UA_Binary_OpenSecureChannel()
-    # somepacket.show()
+    somepacket = OPC_UA_Binary_OpenSecureChannel()
+    somepacket.show()
 
     # somepacket = OPC_UA_Binary_SecureConversationMessage()
     # somepacket.show()

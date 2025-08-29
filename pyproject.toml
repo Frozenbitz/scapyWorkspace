@@ -7,17 +7,19 @@ authors = [
 ]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 dependencies = [
     "scapy @ file:///home/las3/peter/scapyWorkspace/src/scapy",
     "cryptography (>=45.0.6,<46.0.0)",
     "pyx (>=0.16,<0.17)",
-    "matplotlib (>=3.10.5,<4.0.0)"
+    "matplotlib (>=3.10.5,<4.0.0)",
+    "pytest (>=8.4.1,<9.0.0)",
+    "ipython (>=9.4.0,<10.0.0)"
 ]
 
 [project.scripts]
 workspace = "workspace.__main__:main"
-clhello = "workspace.testing_client_hello:main"
+opcua_diag = "workspace.opcua_binary_diagnostic:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

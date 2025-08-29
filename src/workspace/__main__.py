@@ -1,5 +1,4 @@
 from scapy.all import *
-from scapy.compat import raw
 from scapy.layers.l2 import Ether
 from scapy.utils import hexdump
 
@@ -117,7 +116,7 @@ def main():
     dumpOpcPackets(open62541_client_CloseSecureChannelRequest)
 
     print("\n--- Parsing open62541 Client CloseSecureChannelRequest ACK as Ether ---\n")
-    dumpOpcPackets(open62541_client_CloseSecureChannelRequest_ack)
+    dumpOpcPackets(open62541_client_CloseSecureChannelRequest_err)
 
     # ---------------------------------------------------------------------------- #
 
