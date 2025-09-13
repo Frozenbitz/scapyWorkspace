@@ -4,7 +4,7 @@ from scapy.layers.l2 import Ether
 
 from scapy.contrib.opcua_binary import (
     OPC_UA_Binary_Hello,
-    OPC_UA_Binary_Ack,
+    OPC_UA_Binary_Acknowledge,
     OPC_UA_Binary_OpenSecureChannel,
     OPC_UA_Binary_SecureConversationMessage,
 )
@@ -15,7 +15,11 @@ from workspace.diagnostics.python_opcua import (
     pythonopc_client_hello,
     pythonopc_client_hello_ack,
     pythonopc_client_OpenSecureChannel,
+    pythonopc_client_CreateSessionRequest,
     pythonopc_client_ActivateSessionRequest,
+    pythonopc_client_ReadRequest,
+    pythonopc_client_CloseSessionRequest,
+    pythonopc_client_CloseSecureChannelRequest,
 )
 
 from workspace.diagnostics.open62541 import (
@@ -34,10 +38,19 @@ def main():
     packet = Ether(pythonopc_client_OpenSecureChannel)
     packet.show()
 
+    packet = Ether(pythonopc_client_CreateSessionRequest)
+    packet.show()
+
     packet = Ether(pythonopc_client_ActivateSessionRequest)
     packet.show()
 
-    packet = Ether(open62541_client_CloseSecureChannelRequest_err)
+    packet = Ether(pythonopc_client_ReadRequest)
+    packet.show()
+
+    packet = Ether(pythonopc_client_CloseSessionRequest)
+    packet.show()
+
+    packet = Ether(pythonopc_client_CloseSecureChannelRequest)
     packet.show()
 
 
@@ -57,7 +70,7 @@ def decodeSomeOpcBins():
     # somepacket.show()
 
     # test the binary ack part without MSGT, CT and MSZ:
-    packet = OPC_UA_Binary_Ack(
+    packet = OPC_UA_Binary_Acknowledge(
         bytes.fromhex("00000000ffff0000ffff00000000400641060000")
     )
     packet.show()
