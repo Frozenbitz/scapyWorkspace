@@ -32,13 +32,35 @@ from workspace.diagnostics.python_opcua import (
 
 
 from workspace.diagnostics.nodejs_opcua import (
-    nodejs_client_hello,  # done
-    nodejs_client_OpenSecureChannel,  # done
-    nodejs_client_CreateSessionRequest,  # done
+    nodejs_client_hello,
+    nodejs_client_OpenSecureChannel,
+    nodejs_client_CreateSessionRequest,
     nodejs_client_ActivateSessionRequest,
     nodejs_client_ReadRequest,
     nodejs_client_CloseSessionRequest,
-    nodejs_client_CloseSecureChannelRequest,  # done
+    nodejs_client_CloseSecureChannelRequest,
+)
+
+
+from workspace.diagnostics.open62541 import (
+    open62541_client_hello,
+    open62541_client_OpenSecureChannel,
+    open62541_client_CreateSessionRequest,
+    open62541_client_ActivateSessionRequest,
+    open62541_client_ReadRequest,
+    open62541_client_CloseSessionRequest,
+    open62541_client_CloseSecureChannelRequest,
+)
+
+
+from workspace.diagnostics.dotnetstd import (
+    dotnetstd_client_hello,
+    dotnetstd_client_OpenSecureChannel,
+    dotnetstd_client_CreateSessionRequest,
+    dotnetstd_client_ActivateSessionRequest,
+    dotnetstd_client_ReadRequest,
+    dotnetstd_client_CloseSessionRequest,
+    dotnetstd_client_CloseSecureChannelRequest,
 )
 
 
@@ -89,11 +111,45 @@ def main():
         nodejs_client_CloseSecureChannelRequest,
     }
 
-    for request in nodejs_requests:
+    # for request in nodejs_requests:
+    #     packet = Ether(request)
+    #     packet.show()
+
+    # packet = Ether(nodejs_client_CloseSessionRequest)
+    # packet.show()
+
+    open62541_requests = {
+        open62541_client_hello,
+        open62541_client_OpenSecureChannel,
+        open62541_client_CreateSessionRequest,
+        open62541_client_ActivateSessionRequest,
+        open62541_client_ReadRequest,
+        open62541_client_CloseSessionRequest,
+        open62541_client_CloseSecureChannelRequest,
+    }
+
+    # for request in open62541_requests:
+    #     packet = Ether(request)
+    #     packet.show()
+
+    # packet = Ether(open62541_client_ReadRequest)
+    # packet.show()
+
+    dotnetstd_requests = {
+        dotnetstd_client_hello,
+        dotnetstd_client_OpenSecureChannel,
+        dotnetstd_client_CreateSessionRequest,
+        dotnetstd_client_ActivateSessionRequest,
+        dotnetstd_client_ReadRequest,
+        dotnetstd_client_CloseSessionRequest,
+        dotnetstd_client_CloseSecureChannelRequest,
+    }
+
+    for request in dotnetstd_requests:
         packet = Ether(request)
         packet.show()
 
-    # packet = Ether(nodejs_client_CloseSessionRequest)
+    # packet = Ether(open62541_client_ReadRequest)
     # packet.show()
 
 
