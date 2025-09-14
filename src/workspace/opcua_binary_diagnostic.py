@@ -70,6 +70,30 @@ from workspace.diagnostics.open62541 import (
 
 
 def main():
+    intial_requests()
+
+    python_responses = {
+        # pythonopc_client_hello_ack,
+        # pythonopc_client_OpenSecureChannel_ack,
+        pythonopc_client_CreateSessionRequest_ack,
+        pythonopc_client_ActivateSessionRequest_ack,
+        pythonopc_client_ReadRequest_ack,
+        pythonopc_client_CloseSessionRequest_ack,
+    }
+
+    # for response in python_responses:
+    #     packet = Ether(response)
+    #     packet.show()
+
+    packet = Ether(pythonopc_client_CreateSessionRequest_ack)
+    packet.show()
+
+
+if __name__ == "__main__":
+    main()
+
+
+def intial_requests():
 
     python_requests = {
         pythonopc_client_hello,
@@ -84,22 +108,6 @@ def main():
     # for request in python_requests:
     #     packet = Ether(request)
     #     packet.show()
-
-    python_responses = {
-        pythonopc_client_hello_ack,
-        pythonopc_client_OpenSecureChannel_ack,
-        pythonopc_client_CreateSessionRequest_ack,
-        pythonopc_client_ActivateSessionRequest_ack,
-        pythonopc_client_ReadRequest_ack,
-        pythonopc_client_CloseSessionRequest_ack,
-    }
-
-    # for response in python_responses:
-    #     packet = Ether(response)
-    #     packet.show()
-
-    # packet = Ether(pythonopc_client_hello_ack)
-    # packet.show()
 
     nodejs_requests = {
         nodejs_client_hello,
@@ -145,16 +153,12 @@ def main():
         dotnetstd_client_CloseSecureChannelRequest,
     }
 
-    for request in dotnetstd_requests:
-        packet = Ether(request)
-        packet.show()
+    # for request in dotnetstd_requests:
+    #     packet = Ether(request)
+    #     packet.show()
 
     # packet = Ether(open62541_client_ReadRequest)
     # packet.show()
-
-
-if __name__ == "__main__":
-    main()
 
 
 def decodeSomeOpcBins():
