@@ -9,11 +9,9 @@ from scapy.contrib.opcua_binary import (
     OPC_UA_Binary_SecureConversationMessage,
 )
 
-# from scapy.layers.inet import IP
 
 from workspace.diagnostics.python_opcua import (
     pythonopc_client_hello,
-    pythonopc_client_hello_ack,
     pythonopc_client_OpenSecureChannel,
     pythonopc_client_CreateSessionRequest,
     pythonopc_client_ActivateSessionRequest,
@@ -22,6 +20,28 @@ from workspace.diagnostics.python_opcua import (
     pythonopc_client_CloseSecureChannelRequest,
 )
 
+
+from workspace.diagnostics.python_opcua import (
+    pythonopc_client_hello_ack,
+    pythonopc_client_OpenSecureChannel_ack,
+    pythonopc_client_CreateSessionRequest_ack,
+    pythonopc_client_ActivateSessionRequest_ack,
+    pythonopc_client_ReadRequest_ack,
+    pythonopc_client_CloseSessionRequest_ack,
+)
+
+
+from workspace.diagnostics.nodejs_opcua import (
+    nodejs_client_hello,  # done
+    nodejs_client_OpenSecureChannel,  # done
+    nodejs_client_CreateSessionRequest,  # done
+    nodejs_client_ActivateSessionRequest,
+    nodejs_client_ReadRequest,
+    nodejs_client_CloseSessionRequest,
+    nodejs_client_CloseSecureChannelRequest,  # done
+)
+
+
 from workspace.diagnostics.open62541 import (
     open62541_client_CloseSecureChannelRequest_err,
 )
@@ -29,29 +49,52 @@ from workspace.diagnostics.open62541 import (
 
 def main():
 
-    packet = Ether(pythonopc_client_hello)
-    packet.show()
+    python_requests = {
+        pythonopc_client_hello,
+        pythonopc_client_OpenSecureChannel,
+        pythonopc_client_CreateSessionRequest,
+        pythonopc_client_ActivateSessionRequest,
+        pythonopc_client_ReadRequest,
+        pythonopc_client_CloseSessionRequest,
+        pythonopc_client_CloseSecureChannelRequest,
+    }
 
-    packet = Ether(pythonopc_client_hello_ack)
-    packet.show()
+    # for request in python_requests:
+    #     packet = Ether(request)
+    #     packet.show()
 
-    packet = Ether(pythonopc_client_OpenSecureChannel)
-    packet.show()
+    python_responses = {
+        pythonopc_client_hello_ack,
+        pythonopc_client_OpenSecureChannel_ack,
+        pythonopc_client_CreateSessionRequest_ack,
+        pythonopc_client_ActivateSessionRequest_ack,
+        pythonopc_client_ReadRequest_ack,
+        pythonopc_client_CloseSessionRequest_ack,
+    }
 
-    packet = Ether(pythonopc_client_CreateSessionRequest)
-    packet.show()
+    # for response in python_responses:
+    #     packet = Ether(response)
+    #     packet.show()
 
-    packet = Ether(pythonopc_client_ActivateSessionRequest)
-    packet.show()
+    # packet = Ether(pythonopc_client_hello_ack)
+    # packet.show()
 
-    packet = Ether(pythonopc_client_ReadRequest)
-    packet.show()
+    nodejs_requests = {
+        nodejs_client_hello,
+        nodejs_client_OpenSecureChannel,
+        nodejs_client_CreateSessionRequest,
+        nodejs_client_ActivateSessionRequest,
+        nodejs_client_ReadRequest,
+        nodejs_client_CloseSessionRequest,
+        nodejs_client_CloseSecureChannelRequest,
+    }
 
-    packet = Ether(pythonopc_client_CloseSessionRequest)
-    packet.show()
+    for request in nodejs_requests:
+        packet = Ether(request)
+        packet.show()
 
-    packet = Ether(pythonopc_client_CloseSecureChannelRequest)
-    packet.show()
+    # packet = Ether(nodejs_client_CloseSessionRequest)
+    # packet.show()
 
 
 if __name__ == "__main__":
