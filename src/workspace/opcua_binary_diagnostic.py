@@ -3,6 +3,8 @@ from scapy.all import *
 from scapy.layers.l2 import Ether
 
 from scapy.contrib.opcua_binary import (
+    BuiltIn_OPCUA_Binary_LocalizedText,
+    BuiltIn_OPCUA_Binary_Variant,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Acknowledge,
     OPC_UA_Binary_OpenSecureChannel,
@@ -42,6 +44,17 @@ from workspace.diagnostics.nodejs_opcua import (
 )
 
 
+from workspace.diagnostics.nodejs_opcua import (
+    nodejs_client_hello_ack,
+    nodejs_client_OpenSecureChannel_ack,
+    nodejs_client_CreateSessionRequest_ack,
+    nodejs_client_ActivateSessionRequest_ack,
+    nodejs_client_ReadRequest_ack,
+    nodejs_client_CloseSessionRequest_ack,
+    nodejs_client_CloseSecureChannelRequest_ack,
+)
+
+
 from workspace.diagnostics.open62541 import (
     open62541_client_hello,
     open62541_client_OpenSecureChannel,
@@ -50,6 +63,16 @@ from workspace.diagnostics.open62541 import (
     open62541_client_ReadRequest,
     open62541_client_CloseSessionRequest,
     open62541_client_CloseSecureChannelRequest,
+)
+
+
+from workspace.diagnostics.open62541 import (
+    open62541_client_hello_ack,
+    open62541_client_OpenSecureChannel_ack,
+    open62541_client_CreateSessionRequest_ack,
+    open62541_client_ActivateSessionRequest_ack,
+    open62541_client_ReadRequest_ack,
+    open62541_client_CloseSessionRequest_ack,
 )
 
 
@@ -63,37 +86,22 @@ from workspace.diagnostics.dotnetstd import (
     dotnetstd_client_CloseSecureChannelRequest,
 )
 
+from workspace.diagnostics.dotnetstd import (
+    dotnetstd_client_hello_ack,
+    dotnetstd_client_OpenSecureChannel_ack,
+    dotnetstd_client_CreateSessionRequest_ack,
+    dotnetstd_client_ActivateSessionRequest_ack,
+    dotnetstd_client_ReadRequest_ack,
+    dotnetstd_client_CloseSessionRequest_ack,
+)
+
 
 from workspace.diagnostics.open62541 import (
     open62541_client_CloseSecureChannelRequest_err,
 )
 
 
-def main():
-    intial_requests()
-
-    python_responses = {
-        # pythonopc_client_hello_ack,
-        # pythonopc_client_OpenSecureChannel_ack,
-        pythonopc_client_CreateSessionRequest_ack,
-        pythonopc_client_ActivateSessionRequest_ack,
-        pythonopc_client_ReadRequest_ack,
-        pythonopc_client_CloseSessionRequest_ack,
-    }
-
-    # for response in python_responses:
-    #     packet = Ether(response)
-    #     packet.show()
-
-    packet = Ether(pythonopc_client_CreateSessionRequest_ack)
-    packet.show()
-
-
-if __name__ == "__main__":
-    main()
-
-
-def intial_requests():
+def initial_requests():
 
     python_requests = {
         pythonopc_client_hello,
@@ -105,9 +113,9 @@ def intial_requests():
         pythonopc_client_CloseSecureChannelRequest,
     }
 
-    # for request in python_requests:
-    #     packet = Ether(request)
-    #     packet.show()
+    for request in python_requests:
+        packet = Ether(request)
+        packet.show()
 
     nodejs_requests = {
         nodejs_client_hello,
@@ -119,9 +127,9 @@ def intial_requests():
         nodejs_client_CloseSecureChannelRequest,
     }
 
-    # for request in nodejs_requests:
-    #     packet = Ether(request)
-    #     packet.show()
+    for request in nodejs_requests:
+        packet = Ether(request)
+        packet.show()
 
     # packet = Ether(nodejs_client_CloseSessionRequest)
     # packet.show()
@@ -136,9 +144,9 @@ def intial_requests():
         open62541_client_CloseSecureChannelRequest,
     }
 
-    # for request in open62541_requests:
-    #     packet = Ether(request)
-    #     packet.show()
+    for request in open62541_requests:
+        packet = Ether(request)
+        packet.show()
 
     # packet = Ether(open62541_client_ReadRequest)
     # packet.show()
@@ -153,27 +161,85 @@ def intial_requests():
         dotnetstd_client_CloseSecureChannelRequest,
     }
 
-    # for request in dotnetstd_requests:
-    #     packet = Ether(request)
-    #     packet.show()
+    for request in dotnetstd_requests:
+        packet = Ether(request)
+        packet.show()
 
     # packet = Ether(open62541_client_ReadRequest)
     # packet.show()
 
 
-def decodeSomeOpcBins():
+def initial_responses():
 
-    # somepacket = OPC_UA_Binary_Hello()
-    # somepacket.show()
+    python_responses = {
+        pythonopc_client_hello_ack,
+        pythonopc_client_OpenSecureChannel_ack,
+        pythonopc_client_CreateSessionRequest_ack,
+        pythonopc_client_ActivateSessionRequest_ack,
+        pythonopc_client_ReadRequest_ack,
+        pythonopc_client_CloseSessionRequest_ack,
+    }
 
-    somepacket = OPC_UA_Binary_OpenSecureChannel()
-    somepacket.show()
+    for response in python_responses:
+        packet = Ether(response)
+        packet.show()
 
-    # somepacket = OPC_UA_Binary_SecureConversationMessage()
-    # somepacket.show()
+    nodejs_responses = {
+        nodejs_client_hello_ack,
+        nodejs_client_OpenSecureChannel_ack,
+        nodejs_client_CreateSessionRequest_ack,
+        nodejs_client_ActivateSessionRequest_ack,
+        nodejs_client_ReadRequest_ack,
+        nodejs_client_CloseSessionRequest_ack,
+        nodejs_client_CloseSecureChannelRequest_ack,
+    }
 
-    # test the binary ack part without MSGT, CT and MSZ:
-    packet = OPC_UA_Binary_Acknowledge(
-        bytes.fromhex("00000000ffff0000ffff00000000400641060000")
-    )
+    for response in nodejs_responses:
+        packet = Ether(response)
+        packet.show()
+
+    open62541_responses = {
+        open62541_client_hello_ack,
+        open62541_client_OpenSecureChannel_ack,
+        open62541_client_CreateSessionRequest_ack,
+        open62541_client_ActivateSessionRequest_ack,
+        open62541_client_ReadRequest_ack,
+        open62541_client_CloseSessionRequest_ack,
+    }
+
+    for response in open62541_responses:
+        packet = Ether(response)
+        packet.show()
+
+    dotnetstd_responses = {
+        dotnetstd_client_hello_ack,
+        dotnetstd_client_OpenSecureChannel_ack,
+        dotnetstd_client_CreateSessionRequest_ack,
+        dotnetstd_client_ActivateSessionRequest_ack,
+        dotnetstd_client_ReadRequest_ack,
+        dotnetstd_client_CloseSessionRequest_ack,
+    }
+
+    for response in dotnetstd_responses:
+        packet = Ether(response)
+        packet.show()
+
+
+def main():
+    # initial_requests()
+    # initial_responses()
+
+    # test = BuiltIn_OPCUA_Binary_LocalizedText(bytes.fromhex("00"))
+    # test.show()
+
+    # TODO: this creates an error
+    # variant and the combination with flagged fields, seems to break something
+    # test = BuiltIn_OPCUA_Binary_Variant(bytes.fromhex("1500"))
+    # test.show()
+
+    packet = Ether(open62541_client_CreateSessionRequest)
     packet.show()
+
+
+if __name__ == "__main__":
+    main()
