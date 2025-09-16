@@ -106,6 +106,10 @@ from workspace.diagnostics.open62541 import (
 
 def initial_requests():
 
+    print("####################################################################")
+    print("python")
+    print("####################################################################")
+
     python_requests = {
         pythonopc_client_hello,
         pythonopc_client_OpenSecureChannel,
@@ -119,6 +123,10 @@ def initial_requests():
     for request in python_requests:
         packet = Ether(request)
         packet.show()
+
+    print("####################################################################")
+    print("nodejs")
+    print("####################################################################")
 
     nodejs_requests = {
         nodejs_client_hello,
@@ -137,6 +145,10 @@ def initial_requests():
     # packet = Ether(nodejs_client_CloseSessionRequest)
     # packet.show()
 
+    print("####################################################################")
+    print("open62541")
+    print("####################################################################")
+
     open62541_requests = {
         open62541_client_hello,
         open62541_client_OpenSecureChannel,
@@ -153,6 +165,10 @@ def initial_requests():
 
     # packet = Ether(open62541_client_ReadRequest)
     # packet.show()
+
+    print("####################################################################")
+    print("dotnetstd")
+    print("####################################################################")
 
     dotnetstd_requests = {
         dotnetstd_client_hello,
@@ -245,8 +261,8 @@ def initial_responses():
 
 
 def main():
-    # initial_requests()
-    # initial_responses()
+    initial_requests()
+    initial_responses()
 
     # the decoding of our generic node is broken for some reason
     # test = Generic_NodeId(
@@ -274,8 +290,8 @@ def main():
     # test2 = CommonParameter_DataValue(bytes.fromhex("03150000000000"))
     # test2.show()
 
-    packet = Ether(pythonopc_client_ReadRequest_ack)
-    packet.show()
+    # packet = Ether(pythonopc_client_CreateSessionRequest)
+    # packet.show()
 
 
 if __name__ == "__main__":
