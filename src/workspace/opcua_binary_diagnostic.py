@@ -5,6 +5,7 @@ from scapy.layers.l2 import Ether
 from scapy.contrib.opcua_binary import (
     BuiltIn_OPCUA_Binary_LocalizedText,
     BuiltIn_OPCUA_Binary_Variant,
+    CommonParameter_DataValue,
     Generic_NodeId,
     OPC_UA_Binary,
     OPC_UA_Binary_Hello,
@@ -173,6 +174,10 @@ def initial_requests():
 
 def initial_responses():
 
+    print("####################################################################")
+    print("python")
+    print("####################################################################")
+
     python_responses = {
         pythonopc_client_hello_ack,
         pythonopc_client_OpenSecureChannel_ack,
@@ -185,6 +190,10 @@ def initial_responses():
     for response in python_responses:
         packet = Ether(response)
         packet.show()
+
+    print("####################################################################")
+    print("nodejs")
+    print("####################################################################")
 
     nodejs_responses = {
         nodejs_client_hello_ack,
@@ -200,6 +209,10 @@ def initial_responses():
         packet = Ether(response)
         packet.show()
 
+    print("####################################################################")
+    print("open62541")
+    print("####################################################################")
+
     open62541_responses = {
         open62541_client_hello_ack,
         open62541_client_OpenSecureChannel_ack,
@@ -212,6 +225,10 @@ def initial_responses():
     for response in open62541_responses:
         packet = Ether(response)
         packet.show()
+
+    print("####################################################################")
+    print("dotnetstd")
+    print("####################################################################")
 
     dotnetstd_responses = {
         dotnetstd_client_hello_ack,
@@ -229,7 +246,7 @@ def initial_responses():
 
 def main():
     initial_requests()
-    # initial_responses()
+    initial_responses()
 
     # the decoding of our generic node is broken for some reason
     # test = Generic_NodeId(
@@ -254,7 +271,10 @@ def main():
     # )
     # test2.show()
 
-    # packet = Ether(open62541_client_CreateSessionRequest)
+    # test2 = CommonParameter_DataValue(bytes.fromhex("03150000000000"))
+    # test2.show()
+
+    # packet = Ether(pythonopc_client_ReadRequest_ack)
     # packet.show()
 
 
