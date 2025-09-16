@@ -5,6 +5,8 @@ from scapy.layers.l2 import Ether
 from scapy.contrib.opcua_binary import (
     BuiltIn_OPCUA_Binary_LocalizedText,
     BuiltIn_OPCUA_Binary_Variant,
+    Generic_NodeId,
+    OPC_UA_Binary,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Acknowledge,
     OPC_UA_Binary_OpenSecureChannel,
@@ -226,19 +228,34 @@ def initial_responses():
 
 
 def main():
-    # initial_requests()
+    initial_requests()
     # initial_responses()
 
-    # test = BuiltIn_OPCUA_Binary_LocalizedText(bytes.fromhex("00"))
+    # the decoding of our generic node is broken for some reason
+    # test = Generic_NodeId(
+    #     bytes.fromhex(
+    #         "00003a7c2235e965d8010300000000000000ffffffff102700000000001c0000007"
+    #         "5726e3a756e636f6e666967757265643a6170706c69636174696f6effffffff0001"
+    #         "000000ffffffffffffffffffffffffffffffff180000006f70632e7463703a2f2f6"
+    #         "c6f63616c686f73743a34383430ffffffffffffffffffffffff0000000000f91541"
+    #         "ffffff7f"
+    #     )
+    # )
     # test.show()
 
-    # TODO: this creates an error
-    # variant and the combination with flagged fields, seems to break something
-    # test = BuiltIn_OPCUA_Binary_Variant(bytes.fromhex("1500"))
-    # test.show()
+    # test2 = OPC_UA_Binary(
+    #     bytes.fromhex(
+    #         "4d534746a6000000020000000200000002000000020000000100cd0100003a7c223"
+    #         "5e965d8010300000000000000ffffffff102700000000001c00000075726e3a756e"
+    #         "636f6e666967757265643a6170706c69636174696f6effffffff0001000000fffff"
+    #         "fffffffffffffffffffffffffff180000006f70632e7463703a2f2f6c6f63616c68"
+    #         "6f73743a34383430ffffffffffffffffffffffff0000000000f91541ffffff7f"
+    #     )
+    # )
+    # test2.show()
 
-    packet = Ether(open62541_client_CreateSessionRequest)
-    packet.show()
+    # packet = Ether(open62541_client_CreateSessionRequest)
+    # packet.show()
 
 
 if __name__ == "__main__":
