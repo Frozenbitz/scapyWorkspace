@@ -245,8 +245,8 @@ def initial_responses():
 
 
 def main():
-    initial_requests()
-    initial_responses()
+    # initial_requests()
+    # initial_responses()
 
     # the decoding of our generic node is broken for some reason
     # test = Generic_NodeId(
@@ -274,8 +274,8 @@ def main():
     # test2 = CommonParameter_DataValue(bytes.fromhex("03150000000000"))
     # test2.show()
 
-    # packet = Ether(pythonopc_client_ReadRequest_ack)
-    # packet.show()
+    packet = Ether(pythonopc_client_ReadRequest_ack)
+    packet.show()
 
 
 if __name__ == "__main__":
