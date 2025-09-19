@@ -21,6 +21,9 @@ dependencies = [
 workspace = "workspace.__main__:main"
 opcua_diag = "workspace.opcua_binary_diagnostic:main"
 opcua_read = "workspace.opcua_binary_randread:main"
+opcua_endpoint = "workspace.opcua_binary_endpoints:main"
+opcua_decode = "workspace.opcua_binary_simple_decode:main"
+opcua_flood = "workspace.opcua_binary_chunk_flood:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
