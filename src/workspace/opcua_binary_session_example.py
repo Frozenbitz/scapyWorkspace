@@ -5,13 +5,15 @@ from scapy.contrib.opcua_binary import (
     CommonParameter_ResponseHeader,
     Generic_NodeId,
     OPC_UA_Binary,
+    OPC_UA_Binary_CloseSecureChannel,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Message_ActivateSessionRequest,
+    OPC_UA_Binary_Message_CloseSecureChannelRequest,
+    OPC_UA_Binary_Message_CloseSessionRequest,
     OPC_UA_Binary_Message_CreateSessionRequest,
     OPC_UA_Binary_Message_CreateSessionResponse,
     OPC_UA_Binary_Message_OpenSecureChannelRequest,
     OPC_UA_Binary_Message_OpenSecureChannelResponse,
-    OPC_UA_Binary_Message_ReadRequest,
     OPC_UA_Binary_OpenSecureChannel,
     OPC_UA_Binary_SecureConversationMessage,
     OPC_UA_Binary_EncodableMessageObject,
@@ -262,6 +264,126 @@ def OPC_activate_session(
     return ans
 
 
+def OPC_close_session(
+    socket,
+    sequence_id,
+    request_id,
+    request_handle_id,
+    channel_id,
+    token_id,
+    timestamp_start,
+    auth_token,
+    show_payload: bool = False,
+) -> OPC_UA_Binary:
+    """
+    gracefully close a user session
+
+    """
+
+    # craft the main message
+    closeSession = (
+        OPC_UA_Binary()
+        / OPC_UA_Binary_SecureConversationMessage()
+        / OPC_UA_Binary_EncodableMessageObject()
+        / OPC_UA_Binary_Message_CloseSessionRequest()
+    )
+
+    closeSession[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 473
+
+    secureMessage = OPC_UA_Binary_SecureConversationMessage
+    closeSession[secureMessage].SequenceNumber = sequence_id
+    closeSession[secureMessage].RequestId = request_id
+    closeSession[secureMessage].SecureChannelId = channel_id
+    closeSession[secureMessage].SecurityTokenId = token_id
+    closeSession[secureMessage].TokenId = token_id
+
+    requestHeader = CommonParameter_RequestHeader
+    closeSession[requestHeader].RequestHandle = request_handle_id
+    closeSession[requestHeader].Timestamp = timestamp_start
+    closeSession[requestHeader].TimeoutHint = 4000
+
+    # important: set the secret session id
+    # node uses the string IDs:
+    # Response_SessionId_NodeID_Mask= 0x4
+    # Response_SessionId_NamespaceIndex_Default= 1
+    # = 3d6cc2652777976d615dc0b892e27094
+    # Python might use other IDs, we need to adapt
+
+    closeSession[Generic_NodeId].NodeID_Mask = 0x5
+    closeSession[Generic_NodeId].NodespaceIndex_Short = 0
+    closeSession[Generic_NodeId].NodeIdentifier_String_Size = len(auth_token)
+    closeSession[Generic_NodeId].NodeIdentifier_String = auth_token
+
+    closeSession[OPC_UA_Binary].MessageSize = len(closeSession)
+
+    if show_payload:
+        closeSession.show2()
+
+    ans = socket.sr1(Raw(closeSession))
+
+    if show_payload:
+        OPC_UA_Binary(ans.load).show()
+
+    return ans
+
+
+def OPC_close_secureChannel(
+    socket,
+    sequence_id,
+    request_id,
+    request_handle_id,
+    channel_id,
+    token_id,
+    timestamp_start,
+    auth_token,
+    show_payload: bool = False,
+):
+    """
+    gracefully close a secure channel
+
+    """
+
+    # craft the main message
+    closeSession = (
+        OPC_UA_Binary()
+        / OPC_UA_Binary_CloseSecureChannel()
+        / OPC_UA_Binary_EncodableMessageObject()
+        / OPC_UA_Binary_Message_CloseSecureChannelRequest()
+    )
+
+    closeSession[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 452
+
+    secureMessage = OPC_UA_Binary_CloseSecureChannel
+    closeSession[secureMessage].SequenceNumber = sequence_id
+    closeSession[secureMessage].RequestId = request_id
+    closeSession[secureMessage].SecureChannelId = channel_id
+    closeSession[secureMessage].SecurityTokenId = token_id
+
+    requestHeader = CommonParameter_RequestHeader
+    closeSession[requestHeader].RequestHandle = request_handle_id
+    closeSession[requestHeader].Timestamp = timestamp_start
+    closeSession[requestHeader].TimeoutHint = 4000
+
+    # important: set the secret session id
+    # node uses the string IDs:
+    # Response_SessionId_NodeID_Mask= 0x4
+    # Response_SessionId_NamespaceIndex_Default= 1
+    # = 3d6cc2652777976d615dc0b892e27094
+    # Python might use other IDs, we need to adapt
+
+    # closeSession[Generic_NodeId].NodeID_Mask = 0
+    # closeSession[Generic_NodeId].NodespaceIndex_Short = 0
+    # closeSession[Generic_NodeId].NodeIdentifier_String_Size = len(auth_token)
+    # closeSession[Generic_NodeId].NodeIdentifier_String = auth_token
+
+    closeSession[OPC_UA_Binary].MessageSize = len(closeSession)
+
+    if show_payload:
+        closeSession.show2()
+
+    socket.send(Raw(closeSession))
+
+
 def main():
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -350,7 +472,45 @@ def main():
         show_payload=True,
     )
 
-    OPC_UA_Binary(answer.load)
+    startRequest += 1
+    startSequence += 1
+    startRequestHandle += 1
+    ts += 1000
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    answer = OPC_close_session(
+        socket=socket,
+        sequence_id=startSequence,
+        request_id=startRequest,
+        request_handle_id=startRequestHandle,
+        channel_id=channelId,
+        token_id=tokenId,
+        timestamp_start=ts,
+        auth_token=session_authToken,
+        show_payload=True,
+    )
+
+    startRequest += 1
+    startSequence += 1
+    startRequestHandle += 1
+    ts += 1000
+
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    answer = OPC_close_secureChannel(
+        socket=socket,
+        sequence_id=startSequence,
+        request_id=startRequest,
+        request_handle_id=startRequestHandle,
+        channel_id=channelId,
+        token_id=tokenId,
+        timestamp_start=ts,
+        auth_token=session_authToken,
+        show_payload=True,
+    )
+
+    socket.close
 
 
 if __name__ == "__main__":
