@@ -3,6 +3,7 @@ from scapy.all import *
 from scapy.contrib.opcua_binary import (
     CommonParameter_RequestHeader,
     CommonParameter_ResponseHeader,
+    Generic_NodeId,
     OPC_UA_Binary,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Message_ActivateSessionRequest,
@@ -218,10 +219,10 @@ def OPC_activate_session(
     # Response_SessionId_NamespaceIndex_Default= 1
     # = 3d6cc2652777976d615dc0b892e27094
 
-    activateSession[requestHeader].NodeID_Mask = 0x5
-    activateSession[requestHeader].NodespaceIndex_Short = 0
-    activateSession[requestHeader].NodeIdentifier_String_Size = len(auth_token)
-    activateSession[requestHeader].NodeIdentifier_String = auth_token
+    activateSession[Generic_NodeId].NodeID_Mask = 0x5
+    activateSession[Generic_NodeId].NodespaceIndex_Short = 0
+    activateSession[Generic_NodeId].NodeIdentifier_String_Size = len(auth_token)
+    activateSession[Generic_NodeId].NodeIdentifier_String = auth_token
 
     SessionRequest = OPC_UA_Binary_Message_ActivateSessionRequest
 
@@ -295,10 +296,10 @@ def OPC_read_request(
     readRequest[header].TimeoutHint = 4000
 
     # set the token/secret required for the service
-    readRequest[header].NodeID_Mask = 0x5
-    readRequest[header].NamespaceIndex_Short = 0
-    readRequest[header].NodeIdentifier_String_Size = len(auth_token)
-    readRequest[header].NodeIdentifier_String = auth_token
+    readRequest[Generic_NodeId].NodeID_Mask = 0x5
+    readRequest[Generic_NodeId].NodespaceIndex_Short = 0
+    readRequest[Generic_NodeId].NodeIdentifier_String_Size = len(auth_token)
+    readRequest[Generic_NodeId].NodeIdentifier_String = auth_token
 
     # we do not need to send ids for reading, but we could
     # readRequest[OPC_UA_Binary_Message_ReadRequest].NodesToRead_ArraySize = 1
