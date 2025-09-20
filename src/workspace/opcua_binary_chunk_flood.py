@@ -2,6 +2,7 @@ from scapy.all import *
 
 from scapy.contrib.opcua_binary import (
     CommonParameter_RequestHeader,
+    CommonParameter_ResponseHeader,
     OPC_UA_Binary,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Message_ActivateSessionRequest,
@@ -68,9 +69,10 @@ def send_OPC_OpenSecureChannel(
         OPC_UA_Binary()
         / OPC_UA_Binary_OpenSecureChannel()
         / OPC_UA_Binary_EncodableMessageObject()
-        / OPC_UA_Binary_Message_EncodedNodeId_4B(NodeId_Identifier_Numeric_4B=446)
         / OPC_UA_Binary_Message_OpenSecureChannelRequest()
     )
+
+    chanOpen[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 446
 
     # we can only use policy none for the public stuff here
     policy = "http://opcfoundation.org/UA/SecurityPolicy#None"
@@ -114,9 +116,10 @@ def OPC_create_session(
         OPC_UA_Binary()
         / OPC_UA_Binary_SecureConversationMessage()
         / OPC_UA_Binary_EncodableMessageObject()
-        / OPC_UA_Binary_Message_EncodedNodeId_4B(NodeId_Identifier_Numeric_4B=461)
         / OPC_UA_Binary_Message_CreateSessionRequest()
     )
+
+    createSession[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 461
 
     # setup the main header (not length)
     createSession[OPC_UA_Binary_SecureConversationMessage].SequenceNumber = sequence_id
@@ -178,10 +181,10 @@ def OPC_activate_session(
         OPC_UA_Binary()
         / OPC_UA_Binary_SecureConversationMessage()
         / OPC_UA_Binary_EncodableMessageObject()
-        / OPC_UA_Binary_Message_EncodedNodeId_4B(NodeId_Identifier_Numeric_4B=467)
         / OPC_UA_Binary_Message_ActivateSessionRequest()
     )
-    # activateSession.show2()
+
+    activateSession[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 467
 
     activateSession[OPC_UA_Binary_SecureConversationMessage].SequenceNumber = (
         sequence_id
@@ -205,7 +208,7 @@ def OPC_activate_session(
     # = 3d6cc2652777976d615dc0b892e27094
 
     activateSession[requestHeader].NodeID_Mask = 0x5
-    activateSession[requestHeader].NamespaceIndex_Default = 0
+    activateSession[requestHeader].NodespaceIndex_Short = 0
     activateSession[requestHeader].NodeIdentifier_String_Size = len(auth_token)
     activateSession[requestHeader].NodeIdentifier_String = auth_token
 
@@ -258,13 +261,15 @@ def OPC_read_request(
     auth_token: str,
     show_payload: bool = True,
 ) -> OPC_UA_Binary:
+
     readRequest = (
         OPC_UA_Binary()
         / OPC_UA_Binary_SecureConversationMessage()
         / OPC_UA_Binary_EncodableMessageObject()
-        / OPC_UA_Binary_Message_EncodedNodeId_4B(NodeId_Identifier_Numeric_4B=631)
         / OPC_UA_Binary_Message_ReadRequest()
     )
+
+    readRequest[CommonParameter_RequestHeader].NodeIdentifier_Numeric_4B = 631
 
     protoHeader = OPC_UA_Binary_SecureConversationMessage
     readRequest[protoHeader].SequenceNumber = sequence_id
@@ -280,7 +285,7 @@ def OPC_read_request(
 
     # set the token/secret required for the service
     readRequest[header].NodeID_Mask = 0x5
-    readRequest[header].NamespaceIndex_Default = 0
+    readRequest[header].NamespaceIndex_Short = 0
     readRequest[header].NodeIdentifier_String_Size = len(auth_token)
     readRequest[header].NodeIdentifier_String = auth_token
 
@@ -345,6 +350,8 @@ def main():
     nonce = random.randbytes(48)  # size: 32 < s < 128 Bit, nodejs checks this!
     startRequestHandle = 10000 + startRequest
 
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     # request a new session handle from the server
     # with the handle we can call services and start user sessions
     answer = OPC_create_session(
@@ -369,10 +376,10 @@ def main():
     startRequestHandle += 1
 
     res = OPC_UA_Binary(answer.load)
-    ts = res[OPC_UA_Binary_Message_CreateSessionResponse].Timestamp + 100
+    ts = res[CommonParameter_ResponseHeader].Timestamp + 100
     session_authToken = res[
         OPC_UA_Binary_Message_CreateSessionResponse
-    ].Response_AuthenticationToken_NodeIdentifier_String
+    ].ResponseAuthenticationToken.NodeIdentifier_String
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
