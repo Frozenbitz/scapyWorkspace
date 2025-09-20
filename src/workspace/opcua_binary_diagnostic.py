@@ -1,17 +1,31 @@
 from scapy.all import *
 
 from scapy.layers.l2 import Ether
+from scapy.layers.inet import IP, TCP, TCP_client
+from datetime import datetime, timezone
 
 from scapy.contrib.opcua_binary import (
     BuiltIn_OPCUA_Binary_LocalizedText,
     BuiltIn_OPCUA_Binary_Variant,
     CommonParameter_DataValue,
+    CommonParameter_DiagnosticInfo,
+    CommonParameter_EndpointDescription,
+    CommonParameter_RequestHeader,
+    CommonParameter_ResponseHeader,
+    CommonParameter_UserIdentityToken,
     Generic_NodeId,
     OPC_UA_Binary,
     OPC_UA_Binary_Hello,
     OPC_UA_Binary_Acknowledge,
+    OPC_UA_Binary_Message_ActivateSessionRequest,
+    OPC_UA_Binary_Message_OpenSecureChannelRequest,
+    OPC_UA_Binary_Message_OpenSecureChannelResponse,
     OPC_UA_Binary_OpenSecureChannel,
     OPC_UA_Binary_SecureConversationMessage,
+    OPC_UA_Binary_EncodableMessageObject,
+    OPC_UA_Binary_Message_EncodedNodeId_4B,
+    OPC_UA_Binary_Message_GetEndpointsRequest,
+    OPC_UA_Binary_Message_GetEndpointsResponse,
 )
 
 
@@ -276,22 +290,30 @@ def main():
     # )
     # test.show()
 
-    # test2 = OPC_UA_Binary(
+    # test2 = CommonParameter_ResponseHeader(
     #     bytes.fromhex(
-    #         "4d534746a6000000020000000200000002000000020000000100cd0100003a7c223"
-    #         "5e965d8010300000000000000ffffffff102700000000001c00000075726e3a756e"
-    #         "636f6e666967757265643a6170706c69636174696f6effffffff0001000000fffff"
-    #         "fffffffffffffffffffffffffff180000006f70632e7463703a2f2f6c6f63616c68"
-    #         "6f73743a34383430ffffffffffffffffffffffff0000000000f91541ffffff7f"
+    #         "59251b4d8316dc0142420f00000000000000000000000000"
     #     )
     # )
     # test2.show()
 
-    # test2 = CommonParameter_DataValue(bytes.fromhex("03150000000000"))
+    # test2 = CommonParameter_EndpointDescription(bytes.fromhex("240000006f70632e7463703a2f2f31302e31302e362e3132363a343834302f4b5249544953334d2f2000000075726e3a6f70656e36323534312e7365727665722e6170706c69636174696f6e2500000075726e3a667265656f706375612e6769746875622e696f3a707974686f6e3a73657276657202160000004b5249544953334d2053616d706c652053657276657202000000ffffffffffffffff01000000240000006f70632e7463703a2f2f31302e31302e362e3132363a343834302f4b5249544953334d2fffffffff010000002f000000687474703a2f2f6f7063666f756e646174696f6e2e6f72672f55412f5365637572697479506f6c696379234e6f6e650300000009000000616e6f6e796d6f757300000000ffffffffffffffff2f000000687474703a2f2f6f7063666f756e646174696f6e2e6f72672f55412f5365637572697479506f6c696379234e6f6e650b000000636572746966696361746502000000ffffffffffffffff39000000687474703a2f2f6f7063666f756e646174696f6e2e6f72672f55412f5365637572697479506f6c69637923426173696332353653686132353608000000757365726e616d6501000000ffffffffffffffff2f000000687474703a2f2f6f7063666f756e646174696f6e2e6f72672f55412f5365637572697479506f6c696379234e6f6e6541000000687474703a2f2f6f7063666f756e646174696f6e2e6f72672f55412d50726f66696c652f5472616e73706f72742f75617463702d756173632d756162696e61727900"))
     # test2.show()
 
-    # packet = Ether(pythonopc_client_CreateSessionRequest)
+    # packet = Ether(pythonopc_client_CreateSessionRequest_ack)
     # packet.show()
+
+    # header = CommonParameter_RequestHeader(Timestamp=0x2451EDBEF09D901)
+    # header.show2()
+
+    # activateSession = (
+    #     OPC_UA_Binary()
+    #     / OPC_UA_Binary_SecureConversationMessage()
+    #     / OPC_UA_Binary_EncodableMessageObject()
+    #     / OPC_UA_Binary_Message_EncodedNodeId_4B(NodeId_Identifier_Numeric_4B=467)
+    #     / OPC_UA_Binary_Message_ActivateSessionRequest()
+    # )
+    # activateSession.show2()
 
 
 if __name__ == "__main__":
