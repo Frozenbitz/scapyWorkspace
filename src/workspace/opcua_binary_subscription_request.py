@@ -509,7 +509,7 @@ def OPC_create_monitored_items_request(
 
         monFilter = CommonParameter_MonitoringParameters()
         monFilter.ClientHandle = 12345
-        monFilter.SamplingInterval = 0x406F400000000000  # 250
+        monFilter.SamplingInterval = 0x00000000000406F40  # 250
         monFilter.QueueSize = 1
         monFilter.DiscardOldest = 1
 
