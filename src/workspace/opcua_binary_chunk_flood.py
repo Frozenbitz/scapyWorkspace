@@ -14,7 +14,6 @@ from scapy.contrib.opcua_binary import (
     OPC_UA_Binary_OpenSecureChannel,
     OPC_UA_Binary_SecureConversationMessage,
     OPC_UA_Binary_EncodableMessageObject,
-    OPC_UA_Binary_Message_EncodedNodeId_4B,
     CustomParameter_LocaleId,
 )
 
@@ -64,6 +63,10 @@ def send_OPC_OpenSecureChannel(
     requestId: int,
     show_payload: bool = False,
 ) -> OPC_UA_Binary:
+    """
+    initiate a new connection
+
+    """
 
     chanOpen = (
         OPC_UA_Binary()
@@ -110,6 +113,10 @@ def OPC_create_session(
     timestamp_start: int,
     show_payload: bool = False,
 ) -> OPC_UA_Binary:
+    """
+    request a new session handle from the server
+
+    """
 
     # craft the main packet
     createSession = (
@@ -175,6 +182,10 @@ def OPC_activate_session(
     auth_token,
     show_payload: bool = False,
 ) -> OPC_UA_Binary:
+    """
+    pass the auth token from the initial session request to start a new user session
+
+    """
 
     # craft the main message
     activateSession = (
