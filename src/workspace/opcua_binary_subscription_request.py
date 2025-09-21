@@ -508,7 +508,7 @@ def OPC_create_monitored_items_request(
     for targetId in nodes_to_query:
 
         monFilter = CommonParameter_MonitoringParameters()
-        monFilter.ClientHandle = 12345
+        monFilter.ClientHandle = 4316
         monFilter.SamplingInterval = 0x00000000000406F40  # 250
         # breaks some older servers:
         # monFilter.SamplingInterval = 0x406F400000000000  # 250
@@ -524,9 +524,6 @@ def OPC_create_monitored_items_request(
         node_to_request[ItemToMonitor].MonitoringMode = "REPORTING"
         QualifiedName = BuiltIn_OPCUA_Binary_QualifiedName
         node_to_request[QualifiedName].QualifiedName_NSIDX = 0x0
-
-        node_to_request.show2()
-
         NodesToMonitor.append(node_to_request)
 
     itemsRequest[ItemRequest].ItemsToCreate = NodesToMonitor
